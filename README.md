@@ -1,6 +1,10 @@
-# Bichitos Zona Norte aplicación local Swing
+# Bichitos Zona Norte
 
-Versión independiente que corrige la arquitectura de la entrega 2. Java Swing, MySQL 8 y Connector/J 8.0.33. El caso, los usuarios y los datos de demostración son ficticios. No requiere navegador ni servidor HTTP.
+Aplicativo de escritorio para gestionar postulaciones y dar seguimiento a las adopciones de Bichitos Zona Norte. Permite importar solicitudes desde un CSV, verificar datos, evaluar candidatos, registrar decisiones fundadas y entregas, y organizar los contactos y las acciones de seguimiento.
+
+Trabajo práctico final de la materia **Seminario de Práctica de Informática**, de la **Universidad Siglo 21**.
+
+Desarrollado en Java Swing, con MySQL 8 y Connector/J 8.0.33. La organización, los usuarios y los datos de demostración son ficticios.
 
 ## Inicio
 
@@ -15,9 +19,9 @@ La configuración de IntelliJ **Bichitos Desktop** está en `.run/`. Usa el mód
 
 La presentación del proyecto final se organiza en [PRESENTACION.md](PRESENTACION.md): explicación del código, POO, menú, recorrido de la aplicación e instrucciones reproducibles. La compilación y el arranque verificados para esta entrega están registrados en `evidencias/compilacion_ejecucion_tp4.txt` y `compilacion_ejecucion_tp4.json`.
 
-## Uso del prototipo
+## Uso del aplicativo
 
-La navegación entre las seis secciones se realiza desde el menú lateral. Se retiró el menú superior «Secciones» por duplicar esos accesos.
+La navegación entre las seis secciones se realiza desde el menú lateral.
 
 - **Resumen:** animales, indicadores de pendientes e historial del animal seleccionado.
 - **Importación:** elegir `data/postulaciones_flujo_prueba.csv`. En la demo inicial: 5 incorporadas, 1 duplicada y 2 rechazadas. El separador es `;`, la codificación UTF-8 y el límite 2.000.000 bytes. Se informa el error por fila; los datos se corrigen en el origen.
@@ -30,7 +34,7 @@ Las tablas permiten desplazamiento horizontal y muestran el contenido completo d
 
 ## Pruebas y evidencia
 
-`./run.ps1 -Test` compila y ejecuta seis pruebas unitarias y 32 casos de aceptación. Las escrituras de aceptación y la reposición de fixtures se limitan a `bichitos_tp4_test`; no se modifica `bichitos_tp2` ni la demo operativa `bichitos_tp4`. El caso CP10 fuerza un fallo después de guardar la verificación y comprueba el rollback. CP32 recorre la aplicación Swing de principio a fin.
+`./run.ps1 -Test` compila y ejecuta seis pruebas unitarias y 32 casos de aceptación. Las escrituras de aceptación y la reposición de fixtures se realizan en la base aislada `bichitos_tp4_test`. El caso CP10 fuerza un fallo después de guardar la verificación y comprueba el rollback. CP32 recorre la aplicación Swing de principio a fin.
 
 Los casos, sus entradas, procedimientos, resultados esperados y obtenidos están en `evidencias/resultados_pruebas.json` y `evidencias/pruebas_ejecutadas.md`. Las capturas de las seis pantallas y de validación/flujo están en `evidencias/capturas/`. `StartupSmokeTest` comprueba el arranque de la clase principal real y cierra únicamente su ventana.
 
@@ -52,8 +56,3 @@ La reposición destructiva mediante `BICHITOS_DEMO_RESET=true` es exclusivamente
 
 La cuenta #1 es de demostración: no hay autenticación ni permisos por rol implementados. RF01/CU10 solo tienen fichas precargadas consultables; no hay alta o edición de animales. No se implementan excepciones de elegibilidad autorizadas (RF07), gestión de usuarios (RF18), copias automatizadas ni resolución completa de devoluciones. El prototipo registra `DEVOLUCION_PENDIENTE`; cerrar una acción no equivale a resolver la devolución. No se afirma validación con usuarios reales ni mediciones de carga de producción.
 
-El repositorio TP2 publicado anteriormente corresponde a la versión web histórica. Esta copia local todavía no se publicó en GitHub.
-
-## Repositorio del proyecto final
-
-La versión completa del código y los archivos asociados está en [Andrefer25/tp-bichitos](https://github.com/Andrefer25/tp-bichitos). El informe de la entrega se presenta en MALPICA-ANDRE-AP4.PDF.
