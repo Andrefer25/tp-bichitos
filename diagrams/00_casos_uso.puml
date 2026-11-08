@@ -1,0 +1,49 @@
+@startuml
+title Casos de uso de la aplicación local
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+left to right direction
+actor "Responsable de adopciones" as R
+actor "Responsable de seguimiento" as S
+actor Coordinador as C
+actor "Voluntario de tránsito" as V
+rectangle "Sistema local Bichitos Zona Norte" {
+ usecase "CU01 Importar postulaciones CSV" as U1
+ usecase "CU02 Verificar elegibilidad" as U2
+ usecase "CU03 Evaluar y comparar postulantes" as U3
+ usecase "CU04 Consultar ficha del animal" as U4
+ usecase "CU05 Registrar decisión de adopción" as U5
+ usecase "CU06 Registrar adopción" as U6
+ usecase "CU07 Programar seguimientos" as U7
+ usecase "CU08 Registrar seguimiento" as U8
+ usecase "CU09 Gestionar alerta o devolución" as U9
+ usecase "CU10 Mantener ficha del animal" as U10
+ usecase "CU11 Consultar historial del caso" as U11
+}
+R --> U1
+R --> U2
+R --> U3
+R --> U5
+R --> U6
+R --> U11
+S --> U8
+S --> U9
+S --> U11
+C --> U9
+C --> U11
+V --> U10
+U3 ..> U4 : <<include>>
+U5 ..> U4 : <<include>>
+U6 ..> U7 : <<include>>
+note bottom of U10
+RF01 y CU10 son parte del diseño objetivo;
+el prototipo consulta fichas precargadas por SQL.
+Los roles no equivalen a autenticación implementada.
+end note
+@enduml

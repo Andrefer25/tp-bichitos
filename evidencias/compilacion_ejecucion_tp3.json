@@ -1,0 +1,15 @@
+{
+  "fecha": "2026-10-18 16:29:36 -03:00",
+  "java": "java version \"16.0.2\" 2021-07-20\nJava(TM) SE Runtime Environment (build 16.0.2+7-67)\nJava HotSpot(TM) 64-Bit Server VM (build 16.0.2+7-67, mixed mode, sharing)",
+  "javac": "javac 16.0.2",
+  "fuentes_principales": 13,
+  "fuentes_pruebas": 4,
+  "compilacion_exit": 0,
+  "unitarias_exit": 0,
+  "unitarias_resultado": "OK: 6 pruebas unitarias sin base de datos",
+  "arranque_exit": 0,
+  "arranque_resultado": "Rehidratación desactivada; se conservan los registros existentes.\nOK: org.bichitos.desktop.App abre la ventana real con MySQL local y reset desactivado.",
+  "esquema": "bichitos_tp3",
+  "reset": false,
+  "intellij_build_verificado": false
+}

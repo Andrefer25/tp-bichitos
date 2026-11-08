@@ -1,0 +1,47 @@
+@startuml
+title DER con tipos SQL der importacion
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+top to bottom direction
+skinparam linetype ortho
+entity "importacion_lote" as importacion_lote {
+ * id : BIGINT <<PK>>
+ * origen : VARCHAR(30)
+ * archivo : VARCHAR(255)
+ * inicio : DATETIME
+   fin : DATETIME
+ * incorporadas : INT UNSIGNED
+ * duplicadas : INT UNSIGNED
+ * fallidas : INT UNSIGNED
+   usuario_id : BIGINT <<FK>>
+}
+entity "importacion_error" as importacion_error {
+ * id : BIGINT <<PK>>
+ * lote_id : BIGINT <<FK>>
+ * numero_fila : INT UNSIGNED
+   id_origen : VARCHAR(100)
+ * detalle : VARCHAR(500)
+}
+entity "auditoria_evento" as auditoria_evento {
+ * id : BIGINT <<PK>>
+   usuario_id : BIGINT <<FK>>
+ * entidad : VARCHAR(50)
+ * entidad_id : BIGINT
+ * evento : VARCHAR(80)
+ * detalle : VARCHAR(500)
+ * fecha : DATETIME
+}
+entity "usuario\n(ver otra parte del DER)" as usuario <<referencia>>
+usuario "0..1" -- "0..*" importacion_lote
+importacion_lote "1" -- "0..*" importacion_error
+usuario "0..1" -- "0..*" auditoria_evento
+legend bottom
+* Atributo obligatorio. PK y FK se identifican por separado.
+Las FK anulables permiten ausencia del padre; ver diccionario y DDL.
+endlegend
+@enduml

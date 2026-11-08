@@ -1,0 +1,41 @@
+@startuml
+title DER con tipos SQL der adopcion
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+top to bottom direction
+skinparam linetype ortho
+entity "decision" as decision {
+ * id : BIGINT <<PK>>
+ * postulacion_id : BIGINT <<FK>>
+ * resultado : ENUM E1
+ * fundamento : TEXT
+ * fecha : DATETIME
+ * usuario_id : BIGINT <<FK>>
+}
+entity "adopcion" as adopcion {
+ * id : BIGINT <<PK>>
+ * decision_id : BIGINT <<FK>>
+ * fecha_entrega : DATE
+ * compromiso_firmado : BOOLEAN
+ * estado : ENUM E2
+}
+entity "postulacion\n(ver otra parte del DER)" as postulacion <<referencia>>
+postulacion "1" -- "0..*" decision
+entity "usuario\n(ver otra parte del DER)" as usuario <<referencia>>
+usuario "1" -- "0..*" decision
+decision "1" -- "0..1" adopcion
+legend bottom
+* Atributo obligatorio. PK y FK se identifican por separado.
+E1 decision.resultado
+  Valores: 'APROBADA', 'RECHAZADA', 'EN_ESPERA'
+E2 adopcion.estado
+  Valores: 'ACTIVA', 'DEVOLUCION_PENDIENTE', 'CERRADA'
+  Valores: 'DEVUELTA'
+Las FK anulables permiten ausencia del padre; ver diccionario y DDL.
+endlegend
+@enduml

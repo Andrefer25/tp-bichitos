@@ -1,0 +1,67 @@
+@startuml
+title Clases de diseño de la interfaz Swing
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+top to bottom direction
+class App {
+ -App()
+ +{static} main(args: String[]): void
+}
+class MainFrame {
+ ~queries: DesktopQueries
+ ~workflow: WorkflowService
+ ~userId: long
+ ~postId: long
+ ~pending: int
+ ~views: List<WorkspacePanel>
+ +MainFrame()
+ ~navigate(index: int): void
+ ~execute<T>(message: String, task: Callable<T>, success: Consumer<T>): void
+ ~error(error: Throwable): void
+}
+abstract class WorkspacePanel {
+ #frame: MainFrame
+ #WorkspacePanel(frame: MainFrame)
+ +{abstract} refreshData(): void
+}
+class ApplicationsPanel {
+ ~info: ApplicationInfo
+ ~identity: JComboBox<String>
+ ~address: JComboBox<String>
+ ~consent: JComboBox<String>
+ +refreshData(): void
+ ~load(): void
+ ~save(): void
+}
+class EvaluationsPanel {
+ ~info: ApplicationInfo
+ ~criterionValues: Map<Long,JComboBox<String>>
+ ~criterionNotes: Map<Long,JTextField>
+ +refreshData(): void
+ ~save(): void
+ ~decide(): void
+}
+class JPanel <<Swing>>
+class JFrame <<Swing>>
+class SwingWorker <<Swing>>
+App ..> MainFrame : crea en EDT
+MainFrame --|> JFrame
+WorkspacePanel --|> JPanel
+MainFrame "1" *-- "6" WorkspacePanel : vistas
+WorkspacePanel <|-- ApplicationsPanel
+WorkspacePanel <|-- EvaluationsPanel
+MainFrame ..> SwingWorker : E/S fuera de EDT
+note bottom of WorkspacePanel
+Las seis vistas son clases internas de MainFrame.
+Otras subclases: OverviewPanel, AdoptionsPanel,
+FollowupsPanel e ImportPanel.
+Cada una redefine refreshData(): polimorfismo.
+~ indica visibilidad de paquete; # protegida.
+end note
+@enduml

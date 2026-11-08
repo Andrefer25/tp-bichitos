@@ -1,0 +1,31 @@
+@startuml
+title Despliegue local de escritorio
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+node "Computadora del responsable" <<device>> {
+ node "Sistema operativo / escritorio" <<executionEnvironment>> {
+  node "JVM Java 16" <<executionEnvironment>> {
+   artifact "Clases compiladas en out/\norg.bichitos.desktop.App" as APP
+   artifact "mysql-connector-j-8.0.33.jar" as DRIVER
+  }
+  database "Servicio MySQL 8\nbichitos_tp3" as DB
+  artifact "Archivo .csv local\nUTF-8 y separador ;" as CSV
+  artifact ".env local\ncredenciales excluidas de Git" as ENV
+ }
+ APP --> DRIVER : API JDBC
+ DRIVER -- DB : protocolo MySQL / TCP / IP\n127.0.0.1:3306, loopback
+ APP ..> CSV : lectura del archivo elegido
+ APP ..> ENV : configuración de conexión
+}
+note bottom of DB
+Aplicación y base residen en la misma computadora.
+No existe recorrido por Ethernet ni Wi-Fi.
+bichitos_tp3_test se reserva a pruebas aisladas.
+end note
+@enduml

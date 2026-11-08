@@ -1,0 +1,52 @@
+Comprobación del proyecto final
+Fecha: 2026-11-08T17:10:28-03:00
+Directorio de trabajo: tp-bichitos
+Esquema operativo: bichitos_tp4
+Esquema de pruebas: bichitos_tp4_test
+java version "16.0.2" 2021-07-20
+Java(TM) SE Runtime Environment (build 16.0.2+7-67)
+Java HotSpot(TM) 64-Bit Server VM (build 16.0.2+7-67, mixed mode, sharing)
+javac 16.0.2
+14 fuentes principales y 4 de pruebas.
+Comando: ./run.ps1 -Test
+
+OK: 6 pruebas unitarias sin base de datos
+CP01 APROBADO Creación del esquema | 18 tablas InnoDB creadas
+CP02 APROBADO Edad inferior a 21 | NO_ELEGIBLE
+CP03 APROBADO Edad exactamente 21 | ELEGIBLE; no implica adopción automática
+CP04 APROBADO Importación mixta | 5 incorporadas, 1 duplicada y 2 rechazadas; 2 errores registrados
+CP05 APROBADO Reimportación del mismo archivo | 0 incorporadas, 6 duplicadas, 2 rechazadas
+CP06 APROBADO Datos incompletos y animal inexistente | 0 postulaciones inválidas; datos faltantes y animal inexistente registrados en cada lote
+CP07 APROBADO Duplicado persona-animal y animal no apto | 0 incorporadas; 1 duplicada persona-animal; 1 rechazada por ADOPTADO
+CP08 APROBADO Archivo mayor al límite | Archivo rechazado; no se creó lote
+CP09 APROBADO Verificación documental | Postulación #7 ELEGIBLE; verificación y auditoría guardadas
+CP10 APROBADO Rollback de verificación | El error posterior a la primera escritura revirtió la verificación y conservó el estado
+CP11 APROBADO Evaluación incompleta | Rechazo por criterios incompletos; 0 evaluaciones parciales
+CP12 APROBADO Evaluaciones independientes | #7 EVALUADA con 4 criterios y 3 actividades; evaluación de #4 sin cambios
+CP13 APROBADO Fundamento obligatorio | Rechazo; ninguna decisión agregada
+CP14 APROBADO Decisión humana fundada | Decisión #14 APROBADA con fundamento y auditoría
+CP15 APROBADO Bloqueo de regresión de estado | Reverificación bloqueada; estado APROBADA conservado
+CP16 APROBADO Una aprobación por animal | Una aprobación para Luna; segundo intento bloqueado
+CP17 APROBADO Entrega sin compromiso | Rechazo; cantidad de adopciones sin cambios
+CP18 APROBADO Entrega y agenda transaccional | Adopción #10; tres tareas con fechas correctas; Mora ADOPTADO
+CP19 APROBADO Entrega duplicada | Segunda entrega bloqueada; una adopción
+CP20 APROBADO Alerta sin responsable y rollback | Rollback completo: contacto pendiente; 0 alertas parciales
+CP21 APROBADO Alerta y contacto extraordinario | Contacto guardado; alerta abierta asignada a #2; tarea EXTRA creada
+CP22 APROBADO Cierre de acción | Acción cerrada con fecha y auditoría
+CP23 APROBADO Sin respuesta y posible devolución | Reintento y alerta registrados; devolución pendiente de resolución completa
+CP24 APROBADO Integridad referencial | MySQL 1452; fila rechazada
+CP25 APROBADO INSERT, SELECT y DELETE controlado | INSERT 1; SELECT 1; DELETE 1; 0 restantes
+Rehidratación desactivada; se conservan los registros existentes.
+Rehidratación desactivada; se conservan los registros existentes.
+CP26 APROBADO Conservación entre arranques | Dos arranques conservan decisiones y datos existentes
+CP27 APROBADO Error de conexión | Error de conexión detectado y URL restaurada
+CP28 APROBADO Navegación y seis pantallas | Seis pantallas cargadas; capturas 01 a 06 generadas
+CP29 APROBADO Correspondencia expediente-formulario | #5 Diego y #4 Clara corresponden a sus respectivos formularios
+CP30 APROBADO Error de validación conserva formulario | Mensaje Fecha inválida; notas conservadas; evaluación no modificada
+CP31 APROBADO Etapas cerradas en solo consulta | Controles de verificación, evaluación y decisión deshabilitados
+CP32 APROBADO Recorrido completo desde Swing | Importación 5/1/2; #7 verificada, evaluada y aprobada; entrega con 3 tareas; contacto, alerta y cierre persistidos desde Swing
+OK: 32 casos documentados; escrituras aisladas en bichitos_tp4_test.
+
+Arranque real, reset desactivado
+Rehidratación desactivada; se conservan los registros existentes.
+OK: org.bichitos.desktop.App abre la ventana real con MySQL local y reset desactivado.

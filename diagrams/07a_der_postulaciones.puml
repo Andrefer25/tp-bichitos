@@ -1,0 +1,79 @@
+@startuml
+title DER con tipos SQL der postulaciones
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+top to bottom direction
+skinparam linetype ortho
+entity "usuario" as usuario {
+ * id : BIGINT <<PK>>
+ * nombre : VARCHAR(120)
+ * correo : VARCHAR(190)
+ * rol : ENUM E1
+ * activo : BOOLEAN
+}
+entity "hogar_transito" as hogar_transito {
+ * id : BIGINT <<PK>>
+ * nombre_referente : VARCHAR(120)
+ * localidad : VARCHAR(120)
+   telefono : VARCHAR(40)
+ * activo : BOOLEAN
+}
+entity "animal" as animal {
+ * id : BIGINT <<PK>>
+ * nombre : VARCHAR(100)
+ * especie : VARCHAR(40)
+   edad_aproximada_anios : TINYINT UNSIGNED
+ * necesidades_cuidado : TEXT
+ * estado : ENUM E2
+   hogar_transito_id : BIGINT <<FK>>
+}
+entity "postulante" as postulante {
+ * id : BIGINT <<PK>>
+   tipo_documento : VARCHAR(15)
+   numero_documento : VARCHAR(30)
+   nombre : VARCHAR(120)
+   fecha_nacimiento : DATE
+   domicilio : VARCHAR(190)
+   localidad : VARCHAR(120)
+   telefono : VARCHAR(40)
+   correo : VARCHAR(190)
+}
+entity "postulacion" as postulacion {
+ * id : BIGINT <<PK>>
+ * animal_id : BIGINT <<FK>>
+ * postulante_id : BIGINT <<FK>>
+ * origen : VARCHAR(30)
+ * id_origen : VARCHAR(100)
+   importacion_lote_id : BIGINT <<FK>>
+ * fecha : DATETIME
+   alquila : BOOLEAN
+   consentimiento_propietario : BOOLEAN
+   tiempo_y_recursos : BOOLEAN
+ * estado : ENUM E3
+   motivo_estado : VARCHAR(500)
+}
+hogar_transito "0..1" -- "0..*" animal
+animal "1" -- "0..*" postulacion
+postulante "1" -- "0..*" postulacion
+entity "importacion_lote\n(ver otra parte del DER)" as importacion_lote <<referencia>>
+importacion_lote "0..1" -- "0..*" postulacion
+legend bottom
+* Atributo obligatorio. PK y FK se identifican por separado.
+E1 usuario.rol
+  Valores: 'COORDINACION', 'ADOPCIONES', 'TRANSITO'
+  Valores: 'SEGUIMIENTO'
+E2 animal.estado
+  Valores: 'EN_TRANSITO', 'APTO', 'ADOPTADO'
+  Valores: 'NO_APTO'
+E3 postulacion.estado
+  Valores: 'RECIBIDA', 'PENDIENTE', 'NO_ELEGIBLE'
+  Valores: 'ELEGIBLE', 'EVALUADA', 'APROBADA'
+  Valores: 'RECHAZADA', 'EN_ESPERA'
+Las FK anulables permiten ausencia del padre; ver diccionario y DDL.
+endlegend
+@enduml

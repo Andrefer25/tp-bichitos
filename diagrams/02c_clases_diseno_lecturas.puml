@@ -1,0 +1,58 @@
+@startuml
+title Clases de diseño de consultas y resultados tipados
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+top to bottom direction
+class DesktopQueries {
+ -queries: CaseQueries
+ +application(id: long): ApplicationInfo
+ +applications(): Grid
+ +evaluation(postId: long, animalId: long): Evaluation
+ +comparison(animalId: long): Grid
+ +followups(): Grid
+ +history(animalId: long): Grid
+}
+class ApplicationInfo <<record>> {
+ -id: long
+ -animalId: long
+ -person: String
+ -animal: String
+ -state: String
+ -animalState: String
+ -details: String
+ -needs: String
+ -identity: Boolean
+ -address: Boolean
+ -consent: Boolean
+ +canVerify(): boolean
+ +canEvaluate(): boolean
+ +canDecide(): boolean
+}
+class Grid <<record>> {
+ -columns: String[]
+ -rows: List<Object[]>
+}
+class CaseQueries {
+ +rows(sql: String, ids: long[]): List<Map<String,Object>>
+ +one(sql: String, ids: long[]): Map<String,Object>
+}
+class Database {
+ +{static} open(): Connection
+}
+DesktopQueries "1" *-- "1" CaseQueries
+DesktopQueries ..> ApplicationInfo : devuelve
+DesktopQueries ..> Grid : devuelve
+CaseQueries ..> Database
+note bottom of ApplicationInfo
+Los componentes record tienen campos privados
+y accesores públicos generados por Java.
+La UI recibe valores tipados o tablas de lectura;
+las sentencias SQL permanecen en repository.
+end note
+@enduml

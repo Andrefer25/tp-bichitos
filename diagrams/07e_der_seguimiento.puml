@@ -1,0 +1,53 @@
+@startuml
+title DER con tipos SQL der seguimiento
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+top to bottom direction
+skinparam linetype ortho
+entity "seguimiento" as seguimiento {
+ * id : BIGINT <<PK>>
+ * adopcion_id : BIGINT <<FK>>
+ * tipo : ENUM E1
+ * fecha_programada : DATE
+ * fecha_limite : DATE
+   fecha_contacto : DATETIME
+   canal : VARCHAR(60)
+   observaciones : TEXT
+   resultado : ENUM E2
+   responsable_id : BIGINT <<FK>>
+}
+entity "accion_alerta" as accion_alerta {
+ * id : BIGINT <<PK>>
+ * seguimiento_id : BIGINT <<FK>>
+ * motivo : VARCHAR(500)
+ * accion : VARCHAR(500)
+ * estado : ENUM E3
+ * fecha_apertura : DATETIME
+ * fecha_limite : DATE
+   fecha_cierre : DATETIME
+ * responsable_id : BIGINT <<FK>>
+}
+entity "adopcion\n(ver otra parte del DER)" as adopcion <<referencia>>
+adopcion "1" -- "0..*" seguimiento
+entity "usuario\n(ver otra parte del DER)" as usuario <<referencia>>
+usuario "0..1" -- "0..*" seguimiento
+seguimiento "1" -- "0..*" accion_alerta
+usuario "1" -- "0..*" accion_alerta
+legend bottom
+* Atributo obligatorio. PK y FK se identifican por separado.
+E1 seguimiento.tipo
+  Valores: 'INICIAL', 'DIA15', 'DIA30'
+  Valores: 'EXTRA'
+E2 seguimiento.resultado
+  Valores: 'SATISFACTORIO', 'ACOMPANAMIENTO', 'ALERTA'
+  Valores: 'POSIBLE_DEVOLUCION', 'SIN_RESPUESTA'
+E3 accion_alerta.estado
+  Valores: 'ABIERTA', 'CERRADA'
+Las FK anulables permiten ausencia del padre; ver diccionario y DDL.
+endlegend
+@enduml

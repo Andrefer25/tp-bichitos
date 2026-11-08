@@ -1,0 +1,53 @@
+@startuml
+title Clases de análisis del flujo local
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+top to bottom direction
+class "Pantalla de importación" as PI <<boundary>>
+class "Pantalla de postulaciones" as PP <<boundary>>
+class "Pantalla de evaluación" as PE <<boundary>>
+class "Pantalla de adopción" as PA <<boundary>>
+class "Pantalla de seguimiento" as PS <<boundary>>
+class "Control de importación" as CI <<control>>
+class "Control de verificación" as CV <<control>>
+class "Control de evaluación y decisión" as CE <<control>>
+class "Control de entrega y agenda" as CA <<control>>
+class "Control de seguimiento" as CS <<control>>
+class Postulacion <<entity>>
+class Verificacion <<entity>>
+class Evaluacion <<entity>>
+class Decision <<entity>>
+class Adopcion <<entity>>
+class Seguimiento <<entity>>
+class AccionAlerta <<entity>>
+PI --> CI
+PP --> CV
+PE --> CE
+PA --> CA
+PS --> CS
+CI --> Postulacion
+CV --> Verificacion
+CE --> Evaluacion
+CE --> Decision
+CA --> Adopcion
+CA --> Seguimiento
+CS --> Seguimiento
+CS --> AccionAlerta
+Postulacion "1" -- "0..1" Verificacion
+Postulacion "1" -- "0..1" Evaluacion
+Postulacion "1" -- "0..*" Decision
+Decision "1" -- "0..1" Adopcion
+Adopcion "1" -- "3..*" Seguimiento
+Seguimiento "1" -- "0..*" AccionAlerta
+note bottom of Postulacion
+Son responsabilidades de análisis.
+Las entidades conceptuales no afirman
+una clase Java por cada tabla.
+end note
+@enduml

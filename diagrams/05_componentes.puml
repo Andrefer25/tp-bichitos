@@ -1,0 +1,28 @@
+@startuml
+title Componentes de la aplicación local
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+top to bottom direction
+component "Interfaz Swing\norg.bichitos.desktop" as UI
+component "Servicios de aplicación\nWorkflowService / CsvImporter" as APP
+component "Reglas de dominio\nEligibility" as DOMAIN
+component "Lecturas y persistencia\nDesktopQueries / CaseQueries / Database" as REP
+component "Connector/J 8.0.33" as JDBC
+database "MySQL 8\nbichitos_tp3" as DB
+artifact "Respuestas CSV UTF-8" as CSV
+rectangle "Herramientas externas\nGoogle Forms / Sheets" as EXT
+EXT ..> CSV : exportación manual por el\nresponsable
+CSV --> APP : lectura local
+UI --> APP : invocaciones Java
+UI --> REP : consultas de lectura
+APP --> DOMAIN
+APP --> REP
+REP --> JDBC : API JDBC
+JDBC --> DB : protocolo MySQL sobre TCP/IP
+@enduml

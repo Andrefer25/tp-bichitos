@@ -1,0 +1,24 @@
+Verificación de compilación y ejecución de la Entrega 3
+Fecha: 2026-10-18 16:29:36 -03:00
+Directorio de trabajo: tp3-bichitos
+Fuentes principales: 13; fuentes de pruebas: 4
+javac 16.0.2
+java version "16.0.2" 2021-07-20
+Java(TM) SE Runtime Environment (build 16.0.2+7-67)
+Java HotSpot(TM) 64-Bit Server VM (build 16.0.2+7-67, mixed mode, sharing)
+
+Compilación: javac -encoding UTF-8 -d out <todas las fuentes .java de src/main/java y src/test/java>
+Código de salida: 0
+Sin errores de compilación.
+
+Pruebas unitarias: java -Dfile.encoding=UTF-8 -cp "out;lib/mysql-connector-j-8.0.33.jar" org.bichitos.SmokeTest
+OK: 6 pruebas unitarias sin base de datos
+Código de salida: 0
+
+Arranque: java -Dfile.encoding=UTF-8 -DBICHITOS_DEMO_RESET=false -cp "out;lib/mysql-connector-j-8.0.33.jar" org.bichitos.desktop.StartupSmokeTest
+Rehidratación desactivada; se conservan los registros existentes.
+OK: org.bichitos.desktop.App abre la ventana real con MySQL local y reset desactivado.
+Código de salida: 0
+
+Se abrió la clase principal real contra MySQL local/bichitos_tp3; la prueba cerró únicamente su propia ventana. Reinicio de datos desactivado.
+No se ejecutó un build desde la interfaz de IntelliJ. Las pruebas de aceptación previas siguen documentadas por separado en resultados_pruebas.json.

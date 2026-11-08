@@ -1,0 +1,53 @@
+@startuml
+title Contacto, alerta y transacción local
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+actor "Responsable de seguimiento" as R
+boundary "FollowupsPanel" as UI
+control "SwingWorker" as W
+control "WorkflowService" as S
+database "MySQL local" as DB
+R -> UI: registrar contacto(canal,\nresultado, notas)
+UI -> W: execute(tarea)
+W -> S: followUp(id, canal, resultado,\nnotas, owner, userId)
+S -> S: validar canal, resultado y notas
+S -> DB: BEGIN; SELECT seguimiento FOR\nUPDATE
+DB --> S: adopción y fecha_contacto
+alt contacto pendiente y datos válidos
+ S -> DB: UPDATE seguimiento
+ alt satisfactorio
+  S -> DB: conservar contacto registrado
+ else sin respuesta o acompañamiento
+  S -> DB: programar tarea EXTRA
+ else alerta o posible devolución
+  S -> S: exigir responsable de alerta
+  S -> DB: INSERT accion_alerta y tarea EXTRA
+  opt posible devolución
+   S -> DB: UPDATE adopcion a\nDEVOLUCION_PENDIENTE
+  end
+ end
+ S -> DB: INSERT auditoría; COMMIT
+ S --> W: void, operación confirmada
+ W --> UI: actualizar agenda en EDT
+else registro previo, datos inválidos o error SQL
+ S -> DB: ROLLBACK
+ S --> W: excepción
+ W --> UI: mensaje sin borrar lo escrito
+end
+R -> UI: cerrar acción(acción realizada)
+UI -> W: execute(tarea)
+W -> S: closeAlert(id, acción, userId)
+S -> DB: BEGIN; UPDATE solo si ABIERTA;\nauditoría; COMMIT
+S --> W: void
+W --> UI: actualizar estado a CERRADA
+note over S, DB
+Ante fallo del cierre también se ejecuta ROLLBACK.
+Cerrar una acción no resuelve automáticamente una devolución.
+end note
+@enduml

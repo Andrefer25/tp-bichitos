@@ -1,0 +1,878 @@
+{
+  "usuario": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "nombre",
+        "type": "VARCHAR(120)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "correo",
+        "type": "VARCHAR(190)",
+        "extra": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "rol",
+        "type": "ENUM('COORDINACION','ADOPCIONES','TRANSITO','SEGUIMIENTO')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "activo",
+        "type": "BOOLEAN",
+        "extra": "NOT NULL DEFAULT TRUE"
+      }
+    ],
+    "refs": [],
+    "pk": [
+      "id"
+    ]
+  },
+  "hogar_transito": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "nombre_referente",
+        "type": "VARCHAR(120)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "localidad",
+        "type": "VARCHAR(120)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "telefono",
+        "type": "VARCHAR(40)",
+        "extra": ""
+      },
+      {
+        "name": "activo",
+        "type": "BOOLEAN",
+        "extra": "NOT NULL DEFAULT TRUE"
+      }
+    ],
+    "refs": [],
+    "pk": [
+      "id"
+    ]
+  },
+  "animal": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "nombre",
+        "type": "VARCHAR(100)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "especie",
+        "type": "VARCHAR(40)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "edad_aproximada_anios",
+        "type": "TINYINT UNSIGNED",
+        "extra": ""
+      },
+      {
+        "name": "necesidades_cuidado",
+        "type": "TEXT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "estado",
+        "type": "ENUM('EN_TRANSITO','APTO','ADOPTADO','NO_APTO')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "hogar_transito_id",
+        "type": "BIGINT",
+        "extra": "NULL"
+      }
+    ],
+    "refs": [
+      [
+        "hogar_transito_id",
+        "hogar_transito",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "postulante": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "tipo_documento",
+        "type": "VARCHAR(15)",
+        "extra": "NULL"
+      },
+      {
+        "name": "numero_documento",
+        "type": "VARCHAR(30)",
+        "extra": "NULL"
+      },
+      {
+        "name": "nombre",
+        "type": "VARCHAR(120)",
+        "extra": "NULL"
+      },
+      {
+        "name": "fecha_nacimiento",
+        "type": "DATE",
+        "extra": "NULL"
+      },
+      {
+        "name": "domicilio",
+        "type": "VARCHAR(190)",
+        "extra": "NULL"
+      },
+      {
+        "name": "localidad",
+        "type": "VARCHAR(120)",
+        "extra": "NULL"
+      },
+      {
+        "name": "telefono",
+        "type": "VARCHAR(40)",
+        "extra": ""
+      },
+      {
+        "name": "correo",
+        "type": "VARCHAR(190)",
+        "extra": "NULL"
+      }
+    ],
+    "refs": [],
+    "pk": [
+      "id"
+    ]
+  },
+  "importacion_lote": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "origen",
+        "type": "VARCHAR(30)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "archivo",
+        "type": "VARCHAR(255)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "inicio",
+        "type": "DATETIME",
+        "extra": "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "fin",
+        "type": "DATETIME",
+        "extra": "NULL"
+      },
+      {
+        "name": "incorporadas",
+        "type": "INT UNSIGNED",
+        "extra": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "duplicadas",
+        "type": "INT UNSIGNED",
+        "extra": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "fallidas",
+        "type": "INT UNSIGNED",
+        "extra": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "usuario_id",
+        "type": "BIGINT",
+        "extra": "NULL"
+      }
+    ],
+    "refs": [
+      [
+        "usuario_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "postulacion": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "animal_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "postulante_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "origen",
+        "type": "VARCHAR(30)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "id_origen",
+        "type": "VARCHAR(100)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "importacion_lote_id",
+        "type": "BIGINT",
+        "extra": "NULL"
+      },
+      {
+        "name": "fecha",
+        "type": "DATETIME",
+        "extra": "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "alquila",
+        "type": "BOOLEAN",
+        "extra": "NULL"
+      },
+      {
+        "name": "consentimiento_propietario",
+        "type": "BOOLEAN",
+        "extra": "NULL"
+      },
+      {
+        "name": "tiempo_y_recursos",
+        "type": "BOOLEAN",
+        "extra": "NULL"
+      },
+      {
+        "name": "estado",
+        "type": "ENUM('RECIBIDA','PENDIENTE','NO_ELEGIBLE','ELEGIBLE','EVALUADA','APROBADA','RECHAZADA','EN_ESPERA')",
+        "extra": "NOT NULL DEFAULT 'RECIBIDA'"
+      },
+      {
+        "name": "motivo_estado",
+        "type": "VARCHAR(500)",
+        "extra": ""
+      }
+    ],
+    "refs": [
+      [
+        "animal_id",
+        "animal",
+        "id"
+      ],
+      [
+        "postulante_id",
+        "postulante",
+        "id"
+      ],
+      [
+        "importacion_lote_id",
+        "importacion_lote",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "importacion_error": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "lote_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "numero_fila",
+        "type": "INT UNSIGNED",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "id_origen",
+        "type": "VARCHAR(100)",
+        "extra": ""
+      },
+      {
+        "name": "detalle",
+        "type": "VARCHAR(500)",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "lote_id",
+        "importacion_lote",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "verificacion": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "postulacion_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "identidad_confirmada",
+        "type": "BOOLEAN",
+        "extra": "NULL"
+      },
+      {
+        "name": "domicilio_confirmado",
+        "type": "BOOLEAN",
+        "extra": "NULL"
+      },
+      {
+        "name": "consentimiento_confirmado",
+        "type": "BOOLEAN",
+        "extra": "NULL"
+      },
+      {
+        "name": "observaciones",
+        "type": "VARCHAR(500)",
+        "extra": ""
+      },
+      {
+        "name": "fecha",
+        "type": "DATETIME",
+        "extra": "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "usuario_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "postulacion_id",
+        "postulacion",
+        "id"
+      ],
+      [
+        "usuario_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "evaluacion": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "postulacion_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "entrevista",
+        "type": "ENUM('FAVORABLE','REVISAR','DESFAVORABLE')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "vivienda",
+        "type": "ENUM('FAVORABLE','REVISAR','DESFAVORABLE')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "encuentro",
+        "type": "ENUM('FAVORABLE','REVISAR','DESFAVORABLE')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "observaciones",
+        "type": "TEXT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha",
+        "type": "DATETIME",
+        "extra": "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "usuario_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "postulacion_id",
+        "postulacion",
+        "id"
+      ],
+      [
+        "usuario_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "evaluacion_actividad": {
+    "fields": [
+      {
+        "name": "evaluacion_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "tipo",
+        "type": "ENUM('ENTREVISTA','VIVIENDA','ENCUENTRO')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha",
+        "type": "DATE",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "responsable_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "evaluacion_id",
+        "evaluacion",
+        "id"
+      ],
+      [
+        "responsable_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "evaluacion_id",
+      "tipo"
+    ]
+  },
+  "criterio": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "nombre",
+        "type": "VARCHAR(100)",
+        "extra": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "descripcion",
+        "type": "VARCHAR(300)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "activo",
+        "type": "BOOLEAN",
+        "extra": "NOT NULL DEFAULT TRUE"
+      }
+    ],
+    "refs": [],
+    "pk": [
+      "id"
+    ]
+  },
+  "animal_criterio": {
+    "fields": [
+      {
+        "name": "animal_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "criterio_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "animal_id",
+        "animal",
+        "id"
+      ],
+      [
+        "criterio_id",
+        "criterio",
+        "id"
+      ]
+    ],
+    "pk": [
+      "animal_id",
+      "criterio_id"
+    ]
+  },
+  "evaluacion_criterio": {
+    "fields": [
+      {
+        "name": "evaluacion_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "criterio_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "valoracion",
+        "type": "ENUM('FAVORABLE','REVISAR','DESFAVORABLE','NO_APLICA')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "observaciones",
+        "type": "VARCHAR(500)",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "evaluacion_id",
+        "evaluacion",
+        "id"
+      ],
+      [
+        "criterio_id",
+        "criterio",
+        "id"
+      ]
+    ],
+    "pk": [
+      "evaluacion_id",
+      "criterio_id"
+    ]
+  },
+  "decision": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "postulacion_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "resultado",
+        "type": "ENUM('APROBADA','RECHAZADA','EN_ESPERA')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fundamento",
+        "type": "TEXT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha",
+        "type": "DATETIME",
+        "extra": "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "usuario_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "postulacion_id",
+        "postulacion",
+        "id"
+      ],
+      [
+        "usuario_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "adopcion": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "decision_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "fecha_entrega",
+        "type": "DATE",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "compromiso_firmado",
+        "type": "BOOLEAN",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "estado",
+        "type": "ENUM('ACTIVA','DEVOLUCION_PENDIENTE','CERRADA','DEVUELTA')",
+        "extra": "NOT NULL DEFAULT 'ACTIVA'"
+      }
+    ],
+    "refs": [
+      [
+        "decision_id",
+        "decision",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "seguimiento": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "adopcion_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "tipo",
+        "type": "ENUM('INICIAL','DIA15','DIA30','EXTRA')",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha_programada",
+        "type": "DATE",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha_limite",
+        "type": "DATE",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha_contacto",
+        "type": "DATETIME",
+        "extra": "NULL"
+      },
+      {
+        "name": "canal",
+        "type": "VARCHAR(60)",
+        "extra": ""
+      },
+      {
+        "name": "observaciones",
+        "type": "TEXT",
+        "extra": ""
+      },
+      {
+        "name": "resultado",
+        "type": "ENUM('SATISFACTORIO','ACOMPANAMIENTO','ALERTA','POSIBLE_DEVOLUCION','SIN_RESPUESTA')",
+        "extra": "NULL"
+      },
+      {
+        "name": "responsable_id",
+        "type": "BIGINT",
+        "extra": "NULL"
+      }
+    ],
+    "refs": [
+      [
+        "adopcion_id",
+        "adopcion",
+        "id"
+      ],
+      [
+        "responsable_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "accion_alerta": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "seguimiento_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "motivo",
+        "type": "VARCHAR(500)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "accion",
+        "type": "VARCHAR(500)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "estado",
+        "type": "ENUM('ABIERTA','CERRADA')",
+        "extra": "NOT NULL DEFAULT 'ABIERTA'"
+      },
+      {
+        "name": "fecha_apertura",
+        "type": "DATETIME",
+        "extra": "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "fecha_limite",
+        "type": "DATE",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha_cierre",
+        "type": "DATETIME",
+        "extra": "NULL"
+      },
+      {
+        "name": "responsable_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      }
+    ],
+    "refs": [
+      [
+        "seguimiento_id",
+        "seguimiento",
+        "id"
+      ],
+      [
+        "responsable_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  },
+  "auditoria_evento": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "BIGINT",
+        "extra": "PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "name": "usuario_id",
+        "type": "BIGINT",
+        "extra": "NULL"
+      },
+      {
+        "name": "entidad",
+        "type": "VARCHAR(50)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "entidad_id",
+        "type": "BIGINT",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "evento",
+        "type": "VARCHAR(80)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "detalle",
+        "type": "VARCHAR(500)",
+        "extra": "NOT NULL"
+      },
+      {
+        "name": "fecha",
+        "type": "DATETIME",
+        "extra": "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      }
+    ],
+    "refs": [
+      [
+        "usuario_id",
+        "usuario",
+        "id"
+      ]
+    ],
+    "pk": [
+      "id"
+    ]
+  }
+}

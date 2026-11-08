@@ -1,0 +1,48 @@
+@startuml
+title Decisión, entrega y agenda desde Swing
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+actor "Responsable de adopciones" as R
+boundary "EvaluationsPanel\nAdoptionsPanel" as UI
+control "SwingWorker" as W
+control "WorkflowService" as S
+database "MySQL local" as DB
+R -> UI: registrar decisión(resultado,\nfundamento)
+UI -> W: execute(tarea)
+W -> S: decide(postId, resultado,\nfundamento, userId)
+S -> S: validar resultado y fundamento
+S -> DB: BEGIN; SELECT postulación/animal\nFOR UPDATE
+DB --> S: estado y evaluación
+alt decisión válida
+ S -> DB: INSERT decision; UPDATE\npostulacion; auditoría
+ S -> DB: COMMIT
+ S --> W: decisionId: long
+ W --> UI: actualizar expediente en EDT
+ UI --> R: decisión registrada
+else regla incumplida o error SQL
+ S -> DB: ROLLBACK si comenzó transacción
+ S --> W: excepción
+ W --> UI: mostrar mensaje y conservar\nformulario
+end
+R -> UI: registrar entrega(fecha,\ncompromiso firmado)
+UI -> W: execute(tarea)
+W -> S: adopt(decisionId, fecha, firmado,\nuserId)
+S -> S: exigir fecha y firma
+S -> DB: BEGIN; bloquear decisión y animal
+alt aprobación válida y animal APTO
+ S -> DB: INSERT adopcion; INSERT 3\nseguimientos
+ S -> DB: UPDATE animal a ADOPTADO;\nauditoría; COMMIT
+ S --> W: adoptionId: long
+ W --> UI: actualizar agenda en EDT
+else decisión/estado inválido o fallo
+ S -> DB: ROLLBACK
+ S --> W: excepción; sin guardado parcial
+ W --> UI: mostrar motivo; conservar entradas
+end
+@enduml

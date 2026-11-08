@@ -1,0 +1,41 @@
+@startuml
+title DER con tipos SQL der criterios
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+top to bottom direction
+skinparam linetype ortho
+entity "criterio" as criterio {
+ * id : BIGINT <<PK>>
+ * nombre : VARCHAR(100)
+ * descripcion : VARCHAR(300)
+ * activo : BOOLEAN
+}
+entity "animal_criterio" as animal_criterio {
+ * animal_id : BIGINT <<PK,FK>>
+ * criterio_id : BIGINT <<PK,FK>>
+}
+entity "evaluacion_criterio" as evaluacion_criterio {
+ * evaluacion_id : BIGINT <<PK,FK>>
+ * criterio_id : BIGINT <<PK,FK>>
+ * valoracion : ENUM E1
+ * observaciones : VARCHAR(500)
+}
+entity "animal\n(ver otra parte del DER)" as animal <<referencia>>
+animal "1" -- "0..*" animal_criterio
+criterio "1" -- "0..*" animal_criterio
+entity "evaluacion\n(ver otra parte del DER)" as evaluacion <<referencia>>
+evaluacion "1" -- "0..*" evaluacion_criterio
+criterio "1" -- "0..*" evaluacion_criterio
+legend bottom
+* Atributo obligatorio. PK y FK se identifican por separado.
+E1 evaluacion_criterio.valoracion
+  Valores: 'FAVORABLE', 'REVISAR', 'DESFAVORABLE'
+  Valores: 'NO_APLICA'
+Las FK anulables permiten ausencia del padre; ver diccionario y DDL.
+endlegend
+@enduml

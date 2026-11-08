@@ -1,0 +1,51 @@
+@startuml
+title Clases de diseño de servicios y acceso a datos
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Calibri
+skinparam defaultFontSize 14
+skinparam dpi 150
+hide empty members
+
+top to bottom direction
+class MainFrame
+class CsvImporter {
+ -{static} HEADER: String
+ +importFile(path: Path, userId: long): Summary
+ +importReader(source: Reader, filename: String, userId: long): Summary
+ +{static} parse(line: String): List<String>
+}
+class WorkflowService {
+ +verify(postId: long, identity: Boolean, address: Boolean, consent:\n  Boolean, userId: long): Eligibility.Result
+ +evaluate(postId: long, interview: String, home: String, meeting:\n  String, notes: String, criteria: Map<Long,CriterionValue>, dates:\n  Map<String,LocalDate>, userId: long): long
+ +decide(postId: long, result: String, reason: String, userId: long): long
+ +adopt(decisionId: long, delivery: LocalDate, signed: boolean, userId:\n  long): long
+ +followUp(followId: long, channel: String, result: String, notes:\n  String, owner: Long, userId: long): void
+ +closeAlert(alertId: long, action: String, userId: long): void
+}
+class Eligibility {
+ -Eligibility()
+ +{static} assess(birth: LocalDate, identity: Boolean, address: Boolean,\n  rents: Boolean, consent: Boolean, care: Boolean): Result
+}
+
+
+
+
+class Database {
+ -Database()
+ +{static} open(): Connection
+ +{static} setting(name: String, fallback: String): String
+}
+MainFrame --> WorkflowService
+
+MainFrame ..> CsvImporter
+
+
+
+WorkflowService ..> Eligibility
+WorkflowService ..> Database
+CsvImporter ..> Database
+
+
+@enduml
